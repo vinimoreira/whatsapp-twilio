@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29709.97
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwilioWhatsAppBot", "TwilioWhatsAppBot.csproj", "{8F61EF6C-0BDC-4483-8EAC-6AAEA6A4F79B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8F61EF6C-0BDC-4483-8EAC-6AAEA6A4F79B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F61EF6C-0BDC-4483-8EAC-6AAEA6A4F79B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F61EF6C-0BDC-4483-8EAC-6AAEA6A4F79B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F61EF6C-0BDC-4483-8EAC-6AAEA6A4F79B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DEBDF361-2340-4C3D-BF04-888D4D59AE97}
+	EndGlobalSection
+EndGlobal
