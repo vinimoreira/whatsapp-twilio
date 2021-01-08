@@ -1,0 +1,66 @@
+﻿[
+  {
+    "id": 1,
+    "text": "Por favor, digite seu nome",
+    "type": "text",
+    "nextQuestion": 2
+  },
+  {
+    "id": 2,
+    "text": "Digite sua idade",
+    "type": "number",
+    "nextQuestion": 3
+  },
+  {
+    "id": 3,
+    "text": "Por favor, escolha o seu time",
+    "type": "options",
+    "options": [
+      {
+        "id": "1",
+        "text": "Palmeiras",
+        "nextQuestion": 4
+      },
+      {
+        "id": "2",
+        "text": "São Paulo",
+        "nextQuestion": 5
+      },
+      {
+        "id": "3",
+        "text": "Corinthians",
+        "nextQuestion": 6
+      },
+      {
+        "id": "4",
+        "text": "Santos",
+        "nextQuestion": 7
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "text": "Parabéns você torce para o maior time do Brasil! Avanti Palestra",
+    "nextQuestion": 8
+  },
+  {
+    "id": 5,
+    "text": "Você é um bambi! Chupa!",
+    "nextQuestion": 8
+  },
+  {
+    "id": 6,
+    "text": "Você é um Gambá! Chupa!",
+    "nextQuestion": 8
+  },
+  {
+    "id": 7,
+    "text": "Você é um Idoso! Chupa!",
+    "nextQuestion": 8
+  },
+  {
+    "id": 8,
+    "text": "Obrigado por fazer parte da nossa pesquisa",
+    "end": true
+  }
+]

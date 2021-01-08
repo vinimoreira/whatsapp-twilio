@@ -18,7 +18,7 @@ namespace TwilioWhatsAppBot.Dialogs
         {
             _userState = userState;
 
-            AddDialog(new TopLevelDialog());
+            AddDialog(new LoopDialog());
 
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
@@ -31,7 +31,7 @@ namespace TwilioWhatsAppBot.Dialogs
 
         private async Task<DialogTurnResult> InitialStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            return await stepContext.BeginDialogAsync(nameof(TopLevelDialog), null, cancellationToken);
+            return await stepContext.BeginDialogAsync(nameof(LoopDialog), null, cancellationToken);
         }
 
         private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)

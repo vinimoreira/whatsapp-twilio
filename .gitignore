@@ -20,6 +20,5 @@
 
 /bin
 /obj
-/.vs
-appsettings.*
-appsettings.Development.json
+/.vs/*
+/appsettings.*
