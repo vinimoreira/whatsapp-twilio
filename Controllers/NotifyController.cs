@@ -55,10 +55,10 @@ namespace TwilioWhatsAppBot.Controllers
             //If you encounter permission-related errors when sending this message, see
             //https://aka.ms/BotTrustServiceUrl
 
-            var responseActivity = new Activity("event");
-            responseActivity.Value = question;
-            responseActivity.Name = "NotifyResponse";
-            responseActivity.From = new ChannelAccount("GenerateReport", "AzureFunction");
+            //var responseActivity = new Activity("event");
+            //responseActivity.Value = question;
+            //responseActivity.Name = "NotifyResponse";
+            //responseActivity.From = new ChannelAccount("GenerateReport", "AzureFunction");
 
             turnContext.Activity.Name = "NotifyResponse";
             turnContext.Activity.Value = question;
