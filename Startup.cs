@@ -11,6 +11,8 @@ using Microsoft.Extensions.Hosting;
 using TwilioWhatsAppBot.CustomAdapter.TwilioWhatsApp;
 using TwilioWhatsAppBot.Dialogs;
 using TwilioWhatsAppBot.Bots;
+using System.Collections.Concurrent;
+using Microsoft.Bot.Schema;
 
 namespace TwilioWhatsAppBot
 {
@@ -29,6 +31,9 @@ namespace TwilioWhatsAppBot
 
             // Create the storage we'll be using for User and Conversation state. (Memory is great for testing purposes.)
             services.AddSingleton<IStorage, MemoryStorage>();
+
+            // Create a global hashset for our ConversationReferences
+            services.AddSingleton<ConcurrentDictionary<string, ConversationReference>>();
 
             // Create the User state. (Used in this bot's Dialog implementation.)
             services.AddSingleton<UserState>();

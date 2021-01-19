@@ -63,3 +63,9 @@ To learn more about deploying a bot to Azure, see [Deploy your bot to Azure](htt
 - [Azure CLI](https://docs.microsoft.com/cli/azure/?view=azure-cli-latest)
 - [Azure Portal](https://portal.azure.com)
 - [Channels and Bot Connector Service](https://docs.microsoft.com/en-us/azure/bot-service/bot-concepts?view=azure-bot-service-4.0)
+
+
+
+## REFERENCES
+
+- https://docs.microsoft.com/pt-br/azure/bot-service/bot-builder-howto-long-operations-guidance?view=azure-bot-service-4.0#about-this-sample
