@@ -23,12 +23,14 @@ namespace TwilioWhatsAppBot.Bots
         private readonly ConcurrentDictionary<string, ConversationReference> _conversationReferences;
         private readonly BotState _userState;
         private readonly string _appId;
+        protected readonly ILogger Logger;
 
-        public MainBot(IConfiguration configuration, ConcurrentDictionary<string, ConversationReference> conversationReferences, UserState userState)
+        public MainBot(IConfiguration configuration, ConcurrentDictionary<string, ConversationReference> conversationReferences, UserState userState, ILogger<MainBot> logger)
         {
             _conversationReferences = conversationReferences;
             _appId = configuration["MicrosoftAppId"] ?? string.Empty;
             _userState = userState;
+            Logger = logger;
         }
 
         private void AddConversationReference(Activity activity)
@@ -71,16 +73,7 @@ namespace TwilioWhatsAppBot.Bots
                 await turnContext.Adapter.ContinueConversationAsync(_appId, conversationReference, async (context, cancellation) =>
                 {
                     //Logger.LogInformation("Running dialog with Activity from LongOperationResponse.");
-
-                    // ContinueConversationAsync resets the .Value of the event being continued to Null, 
-                    //so change it back before running the dialog stack. (The .Value contains the response 
-                    //from the Azure Function)
-                    context.Activity.Value = turnContext.Activity.Value;
-                    await turnContext.SendActivityAsync($"You said .", cancellationToken: cancellationToken);
-
-                    // Save any state changes that might have occurred during the inner turn.
-                    //await ConversationState.SaveChangesAsync(context, false, cancellationToken);
-                    await _userState.SaveChangesAsync(turnContext, cancellationToken: cancellationToken);
+                    await ResponseQuestionUser(turnContext, cancellation);
 
                 }, cancellationToken);
             }
@@ -96,19 +89,34 @@ namespace TwilioWhatsAppBot.Bots
 
             // Run the Dialog with the new message Activity.
             // Save any state changes.
+
+            if (turnContext.Activity.Text == "ERRO")
+                throw new System.Exception("Simulabndo erro");
+
             await _userState.SaveChangesAsync(turnContext, cancellationToken: cancellationToken);
         }
 
         private async Task ResponseQuestionUser(ITurnContext<IEventActivity> turnContext, CancellationToken cancellationToken)
         {
             var question = (Question)turnContext.Activity.Value;
-            DialogManager
-            await turnContext.SendActivityAsync(question.Text, cancellationToken: cancellationToken);
+
+            var reply = MessageFactory.Text(question.Text);
+
+            if (question.Options != null)
+            {
+                reply.SuggestedActions = new SuggestedActions()
+                {
+                    Actions = question.Options.Select(opt => new CardAction() { Title = opt.Text, Text = opt.Text, Value = opt.Id, DisplayText = opt.Text, Type = ActionTypes.MessageBack }).ToList()
+                };
+            }
+
+
+            await turnContext.SendActivityAsync(reply, cancellationToken);
 
             // Save any state changes that might have occurred during the inner turn.
             //await ConversationState.SaveChangesAsync(context, false, cancellationToken);
             await _userState.SaveChangesAsync(turnContext, cancellationToken: cancellationToken);
         }
-        
+
     }
 }

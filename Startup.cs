@@ -9,7 +9,6 @@ using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TwilioWhatsAppBot.CustomAdapter.TwilioWhatsApp;
-using TwilioWhatsAppBot.Dialogs;
 using TwilioWhatsAppBot.Bots;
 using System.Collections.Concurrent;
 using Microsoft.Bot.Schema;
@@ -40,8 +39,6 @@ namespace TwilioWhatsAppBot
 
             // Create the Conversation state. (Used by the Dialog system itself.)
             services.AddSingleton<ConversationState>();
-
-            services.AddSingleton<MainDialog>();
 
             // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.
             //services.AddTransient<IBot, DialogAndWelcomeBot<MainDialog>>();
