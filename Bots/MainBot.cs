@@ -24,12 +24,14 @@ namespace TwilioWhatsAppBot.Bots
         private readonly BotState _userState;
         private readonly string _appId;
         protected readonly ILogger Logger;
+        private readonly BotQueueService _queueService;
 
-        public MainBot(IConfiguration configuration, ConcurrentDictionary<string, ConversationReference> conversationReferences, UserState userState, ILogger<MainBot> logger)
+        public MainBot(IConfiguration configuration, ConcurrentDictionary<string, ConversationReference> conversationReferences, UserState userState, ILogger<MainBot> logger, BotQueueService queueService)
         {
             _conversationReferences = conversationReferences;
             _appId = configuration["MicrosoftAppId"] ?? string.Empty;
             _userState = userState;
+            _queueService = queueService;
             Logger = logger;
         }
 
@@ -89,10 +91,7 @@ namespace TwilioWhatsAppBot.Bots
 
             // Run the Dialog with the new message Activity.
             // Save any state changes.
-
-            if (turnContext.Activity.Text == "ERRO")
-                throw new System.Exception("Simulabndo erro");
-
+            await _queueService.QueueActivityToProcess(turnContext.Activity);
             await _userState.SaveChangesAsync(turnContext, cancellationToken: cancellationToken);
         }
 

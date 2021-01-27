@@ -69,3 +69,9 @@ To learn more about deploying a bot to Azure, see [Deploy your bot to Azure](htt
 ## REFERENCES
 
 - https://docs.microsoft.com/pt-br/azure/bot-service/bot-builder-howto-long-operations-guidance?view=azure-bot-service-4.0#about-this-sample
+
+
+
+#MQ 
+https://medium.com/dev-genius/rabbitmq-with-docker-on-windows-in-30-minutes-172e88bb0808
+- docker run -d -p 15672:15672 -p 5672:5672 --name rabbit-test-for-medium rabbitmq:3-management

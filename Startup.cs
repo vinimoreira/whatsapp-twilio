@@ -12,11 +12,20 @@ using TwilioWhatsAppBot.CustomAdapter.TwilioWhatsApp;
 using TwilioWhatsAppBot.Bots;
 using System.Collections.Concurrent;
 using Microsoft.Bot.Schema;
+using Microsoft.Extensions.Configuration;
+using RabbitMQ.Client.Core.DependencyInjection;
 
 namespace TwilioWhatsAppBot
 {
     public class Startup
     {
+        public static IConfiguration Configuration;
+
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -40,9 +49,19 @@ namespace TwilioWhatsAppBot
             // Create the Conversation state. (Used by the Dialog system itself.)
             services.AddSingleton<ConversationState>();
 
+            //Service used to queue into Queues
+            services.AddSingleton<BotQueueService>();
+
+            var rabbitMqSection = Configuration.GetSection("RabbitMq");
+            var exchangeSection = Configuration.GetSection("RabbitMqExchange");
+
+            services.AddRabbitMqClient(rabbitMqSection)
+                .AddProductionExchange("exchange.name", exchangeSection);
+
             // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.
             //services.AddTransient<IBot, DialogAndWelcomeBot<MainDialog>>();
             services.AddTransient<IBot, MainBot>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
