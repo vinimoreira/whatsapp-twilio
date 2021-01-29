@@ -14,6 +14,7 @@ using System.Collections.Concurrent;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Configuration;
 using RabbitMQ.Client.Core.DependencyInjection;
+using TwilioWhatsAppBot.Queue;
 
 namespace TwilioWhatsAppBot
 {
@@ -49,6 +50,10 @@ namespace TwilioWhatsAppBot
             // Create the Conversation state. (Used by the Dialog system itself.)
             services.AddSingleton<ConversationState>();
 
+            // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.
+            //services.AddTransient<IBot, DialogAndWelcomeBot<MainDialog>>();
+            services.AddTransient<IBot, MainBot>();
+
             //Service used to queue into Queues
             services.AddSingleton<BotQueueService>();
 
@@ -56,11 +61,12 @@ namespace TwilioWhatsAppBot
             var exchangeSection = Configuration.GetSection("RabbitMqExchange");
 
             services.AddRabbitMqClient(rabbitMqSection)
-                .AddProductionExchange("exchange.name", exchangeSection);
+                .AddExchange("exchange.name", isConsuming: true, exchangeSection)
+                .AddMessageHandlerTransient<CustomMessageHandler>("question.key");
 
-            // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.
-            //services.AddTransient<IBot, DialogAndWelcomeBot<MainDialog>>();
-            services.AddTransient<IBot, MainBot>();
+            
+
+            services.AddSingleton<IHostedService, ConsumingService>();
 
         }
 
