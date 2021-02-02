@@ -13,7 +13,6 @@ namespace TwilioWhatsAppBot.Queue
             Formatting = Formatting.Indented,
             NullValueHandling = NullValueHandling.Ignore
         };
-
         private readonly IQueueService _queueService;
 
         public BotQueueService(IQueueService queueService)
@@ -36,12 +35,7 @@ namespace TwilioWhatsAppBot.Queue
             };
 
             var message = JsonConvert.SerializeObject(answer, jsonSettings);
-
-            // Aend ResumeConversation event, it will get posted back to us with a specific value, giving us 
-            // the ability to process it and do the right thing.
             await _queueService.SendJsonAsync(message, exchangeName: "exchange.name", routingKey: "answer.key");
-
-
         }
     }
 }

@@ -50,8 +50,6 @@ namespace TwilioWhatsAppBot
             // Create the Conversation state. (Used by the Dialog system itself.)
             services.AddSingleton<ConversationState>();
 
-            // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.
-            //services.AddTransient<IBot, DialogAndWelcomeBot<MainDialog>>();
             services.AddTransient<IBot, MainBot>();
 
             //Service used to queue into Queues
@@ -65,8 +63,6 @@ namespace TwilioWhatsAppBot
                 .AddExchange("exchange.name", isConsuming: false, exchangeSection)
                 .AddExchange("question.name", isConsuming: true, exchangeSectionQuestion)
                 .AddMessageHandlerTransient<CustomMessageHandler>("question.key", exchange: "question.name");
-
-
 
             services.AddSingleton<IHostedService, ConsumingService>();
 

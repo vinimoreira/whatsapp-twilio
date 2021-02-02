@@ -15,7 +15,6 @@ namespace TwilioWhatsAppBot.Bots
 {
     public class MainBot : ActivityHandler
     {
-        // Dependency injected dictionary for storing ConversationReference objects used in NotifyController to proactively message users
         private readonly ConcurrentDictionary<string, ConversationReference> _conversationReferences;
         private readonly BotState _userState;
         private readonly string _appId;
@@ -47,30 +46,12 @@ namespace TwilioWhatsAppBot.Bots
         protected override Task OnConversationUpdateActivityAsync(ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
         {
             AddConversationReference(turnContext.Activity as Activity);
-
             return base.OnConversationUpdateActivityAsync(turnContext, cancellationToken);
         }
 
-        protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
-        {
-            foreach (var member in membersAdded)
-            {
-                // Greet anyone that was not the target (recipient) of this message.
-                // To learn more about Adaptive Cards, see https://aka.ms/msbot-adaptivecards for more details.
-                if (member.Id != turnContext.Activity.Recipient.Id)
-                {
-                    var reply = MessageFactory.Text($"Welcome to Complex Dialog Bot {member.Name}. " +
-                        "This bot provides a complex conversation, with multiple dialogs. " +
-                        "Type anything to get started.");
-                    await turnContext.SendActivityAsync(reply, cancellationToken);
-                }
-            }
-        }
-
+       
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
-            //Logger.LogInformation("Running dialog with Message Activity.");
-
             // Run the Dialog with the new message Activity.
             // Save any state changes.
             AddConversationReference(turnContext.Activity as Activity);

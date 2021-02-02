@@ -19,6 +19,7 @@ namespace TwilioWhatsAppBot.Controllers
             NullValueHandling = NullValueHandling.Ignore
         };
         private readonly IQueueService _queueService;
+
         public NotifyController(IQueueService queueService)
         {
             _queueService = queueService;
@@ -28,11 +29,7 @@ namespace TwilioWhatsAppBot.Controllers
         public async Task PostAsync(string id, Question question)
         {
             var message = JsonConvert.SerializeObject(question, jsonSettings);
-
-            // Aend ResumeConversation event, it will get posted back to us with a specific value, giving us 
-            // the ability to process it and do the right thing.
             await _queueService.SendJsonAsync(message, exchangeName: "question.name", routingKey: "question.key");
-
         }
 
         

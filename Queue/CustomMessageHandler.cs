@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using RabbitMQ.Client.Core.DependencyInjection;
 using RabbitMQ.Client.Core.DependencyInjection.MessageHandlers;
 using RabbitMQ.Client.Events;
+using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading;
@@ -17,16 +18,13 @@ namespace TwilioWhatsAppBot.Queue
 {
     public class CustomMessageHandler : IMessageHandler
     {
-        readonly ILogger<CustomMessageHandler> _logger;
-        private IBot _bot;
         private readonly IBotFrameworkHttpAdapter _adapterBoot;
         private readonly TwilioWhatsAppAdapter _whatsAppAdapter;
         private readonly string _appId;
         private readonly ConcurrentDictionary<string, ConversationReference> _conversationReferences;
 
-        public CustomMessageHandler(IBotFrameworkHttpAdapter adapter, ILogger<CustomMessageHandler> logger, IConfiguration configuration, ConcurrentDictionary<string, ConversationReference> conversationReferences, TwilioWhatsAppAdapter whatsAppAdapter)
+        public CustomMessageHandler(IBotFrameworkHttpAdapter adapter, IConfiguration configuration, ConcurrentDictionary<string, ConversationReference> conversationReferences, TwilioWhatsAppAdapter whatsAppAdapter)
         {
-            _logger = logger;
             _adapterBoot = adapter;
             _conversationReferences = conversationReferences;
             _appId = configuration["MicrosoftAppId"] ?? string.Empty;
@@ -36,11 +34,14 @@ namespace TwilioWhatsAppBot.Queue
         public void Handle(BasicDeliverEventArgs eventArgs, string matchingRoute)
         {
             var payload = eventArgs.GetPayload<Question>();
+            
             ConversationReference conversation = null;
             _conversationReferences.TryGetValue(payload.ReplyToId, out conversation);
 
-            var adapter = conversation.ChannelId.Contains("twilio") ? _whatsAppAdapter : ((BotAdapter)_adapterBoot);
+            if (conversation == null)
+                throw new InvalidOperationException("Não foi possível localizar o usuário de retorno");
 
+            var adapter = conversation.ChannelId.Contains("twilio") ? _whatsAppAdapter : ((BotAdapter)_adapterBoot);
             adapter.ContinueConversationAsync(_appId, conversation, async (context, token) => await BotCallback(conversation, payload, context, token), default(CancellationToken));
         }
 
