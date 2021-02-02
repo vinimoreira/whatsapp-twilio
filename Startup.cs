@@ -59,12 +59,14 @@ namespace TwilioWhatsAppBot
 
             var rabbitMqSection = Configuration.GetSection("RabbitMq");
             var exchangeSection = Configuration.GetSection("RabbitMqExchange");
+            var exchangeSectionQuestion = Configuration.GetSection("RabbitMqExchangeQuestion");
 
             services.AddRabbitMqClient(rabbitMqSection)
-                .AddExchange("exchange.name", isConsuming: true, exchangeSection)
-                .AddMessageHandlerTransient<CustomMessageHandler>("question.key");
+                .AddExchange("exchange.name", isConsuming: false, exchangeSection)
+                .AddExchange("question.name", isConsuming: true, exchangeSectionQuestion)
+                .AddMessageHandlerTransient<CustomMessageHandler>("question.key", exchange: "question.name");
 
-            
+
 
             services.AddSingleton<IHostedService, ConsumingService>();
 

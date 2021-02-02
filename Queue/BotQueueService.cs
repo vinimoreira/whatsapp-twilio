@@ -23,8 +23,18 @@ namespace TwilioWhatsAppBot.Queue
 
         public async Task QueueActivityToProcess(IMessageActivity referenceActivity)
         {
-            //var activity = referenceActivity.GetConversationReference().GetContinuationActivity();
-            var answer = new Answer() { ChannelId = referenceActivity.ChannelId, FromId = referenceActivity.From.Id, Text = referenceActivity.Text, Type = referenceActivity.Type, Value = referenceActivity.Value };
+            
+            var answer = new Answer()
+            {
+                Id = referenceActivity.Id,
+                ChannelId = referenceActivity.ChannelId,
+                FromId = referenceActivity.From.Id,
+                Text = referenceActivity.Text,
+                Type = referenceActivity.Type,
+                Value = referenceActivity.Value,
+                QuestionId = (int?)referenceActivity.Conversation.Properties["QuestionId"]
+            };
+
             var message = JsonConvert.SerializeObject(answer, jsonSettings);
 
             // Aend ResumeConversation event, it will get posted back to us with a specific value, giving us 

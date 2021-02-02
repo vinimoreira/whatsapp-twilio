@@ -51,12 +51,21 @@ namespace TwilioWhatsAppBot.CustomAdapter.TwilioWhatsApp
                 mediaUrls.AddRange(activity.Attachments.Select(attachment => new Uri(attachment.ContentUrl)));
             }
 
+
+            var body = activity.Text;
+
+            if (activity.SuggestedActions != null)
+            {
+                body += "\n\n";
+                body += string.Join("\n", activity.SuggestedActions.Actions.Select(x => ConvertOptionString(x)));
+            }
+
             var messageOptions = new TwilioMessageOptions()
             {
                 To = activity.Conversation.Id,
                 ApplicationSid = activity.Conversation.Id,
                 From = twilioNumber,
-                Body = activity.Text
+                Body = body
             };
 
             messageOptions.MediaUrl.AddRange(mediaUrls);
@@ -188,5 +197,12 @@ namespace TwilioWhatsAppBot.CustomAdapter.TwilioWhatsApp
 
             return values;
         }
+
+        private static string ConvertOptionString(CardAction action )
+        {
+            return string.Format("{0}. {1}", action.Value, action.Text);
+        }
+
+
     }
 }

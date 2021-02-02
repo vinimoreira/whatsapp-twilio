@@ -31,7 +31,7 @@ namespace TwilioWhatsAppBot.Controllers
 
             // Aend ResumeConversation event, it will get posted back to us with a specific value, giving us 
             // the ability to process it and do the right thing.
-            await _queueService.SendJsonAsync(message, exchangeName: "exchange.name", routingKey: "question.key");
+            await _queueService.SendJsonAsync(message, exchangeName: "question.name", routingKey: "question.key");
 
         }
 

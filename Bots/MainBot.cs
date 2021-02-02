@@ -34,6 +34,13 @@ namespace TwilioWhatsAppBot.Bots
         private void AddConversationReference(Activity activity)
         {
             var conversationReference = activity.GetConversationReference();
+
+            ConversationReference conversation = null;
+            _conversationReferences.TryGetValue(conversationReference.User.Id, out conversation);
+
+            if (conversation != null)
+                conversationReference.Conversation.Properties = conversation.Conversation.Properties;
+
             _conversationReferences.AddOrUpdate(conversationReference.User.Id, conversationReference, (key, newValue) => conversationReference);
         }
 
@@ -66,6 +73,7 @@ namespace TwilioWhatsAppBot.Bots
 
             // Run the Dialog with the new message Activity.
             // Save any state changes.
+            AddConversationReference(turnContext.Activity as Activity);
             await _queueService.QueueActivityToProcess(turnContext.Activity);
             await _userState.SaveChangesAsync(turnContext, cancellationToken: cancellationToken);
         }

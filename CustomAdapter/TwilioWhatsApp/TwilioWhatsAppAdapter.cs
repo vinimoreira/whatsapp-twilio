@@ -140,11 +140,11 @@ namespace TwilioWhatsAppBot.CustomAdapter.TwilioWhatsApp
                     TwilioHelper.QueryStringToDictionary(await bodyStream.ReadToEndAsync().ConfigureAwait(false));
             }
 
-            //TODO: Implementar validaçaõ Twilio
-            if (_options.ValidateIncomingRequests && !_twilioClient.ValidateSignature(httpRequest, bodyDictionary))
-            {
-                throw new AuthenticationException("WARNING: Webhook received message with invalid signature. Potential malicious behavior!");
-            }
+            ////TODO: Implementar validaçaõ Twilio
+            //if (_options.ValidateIncomingRequests && !_twilioClient.ValidateSignature(httpRequest, bodyDictionary))
+            //{
+            //    throw new AuthenticationException("WARNING: Webhook received message with invalid signature. Potential malicious behavior!");
+            //}
 
             var activity = TwilioHelper.PayloadToActivity(bodyDictionary);
 
