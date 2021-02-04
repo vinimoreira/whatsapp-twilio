@@ -1,0 +1,86 @@
+﻿[
+  {
+    "id": 1,
+    "type": "question",
+    "messages": [
+      {
+        "text": "Olá, sou a Mel, agente de atendimento virtual do **SICOOB METALCRED - Cooperativa Financeira**, é um prazer atender você!",
+        "type": "text",
+        "order": 1
+      },
+      {
+        "text": "Vamos lá, realizarei seu atendimento agora, para que eu possa te encontrar em nossos registros, digite seu **CPF**",
+        "type": "number",
+        "order": 2
+      }
+    ],
+    "nextQuestion": 2
+  },
+  {
+    "id": 2,
+    "type": "anwer",
+    "integrationKey": "CONSULTAR_CPF",
+    "nextQuestion": 3,
+    "RetryText": "Digite seu **CPF**"
+  },
+  {
+    "id": 3,
+    "type": "question",
+    "messages": [
+      {
+        "text": "**@Model.Nome**, que bom poder atender você, identifiquei que você é nosso cooperado desde **@Model.DataAdmissao** e atualmente trabalha na empresa **@Model.Empresa**.",
+        "type": "template",
+        "order": 1
+      },
+      {
+        "text": "Fazer parte de uma Cooperativa é estar unido com pessoas que possuem objetivos em comum, aproveite sempre as vantagens que essa união pode te oferecer.",
+        "type": "text",
+        "order": 2
+      },
+      {
+        "text": "Escolha uma das opções",
+        "type": "options",
+        "order": 3,
+        "options": [
+          {
+            "id": "1",
+            "text": "Empréstimo",
+            "nextQuestion": 4
+          },
+          {
+            "id": "2",
+            "text": "Cadastro",
+            "nextQuestion": 5
+          },
+          {
+            "id": "3",
+            "text": "Produtos",
+            "nextQuestion": 5
+          },
+          {
+            "id": "4",
+            "text": "Seguros",
+            "nextQuestion": 4
+          }
+        ],
+        "notFoundText": "Não foi possivel localizar a opção selecionada."
+      }
+    ]
+  },
+  {
+    "id": "4",
+    "type": "question",
+    "messages": [
+      {
+        "type": "text",
+        "text": "Por favor, informe seu **e-mail**"
+      }
+    ],
+    "nextQuestion": 5
+  },
+  {
+    "id": 8,
+    "type": "template",
+    "text": "Por favor digite novamente"
+  }
+]

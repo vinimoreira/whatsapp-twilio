@@ -15,6 +15,7 @@ using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Configuration;
 using RabbitMQ.Client.Core.DependencyInjection;
 using TwilioWhatsAppBot.Queue;
+using RabbitMQ.Client.Core.DependencyInjection.Services;
 
 namespace TwilioWhatsAppBot
 {
@@ -56,13 +57,16 @@ namespace TwilioWhatsAppBot
             services.AddSingleton<BotQueueService>();
 
             var rabbitMqSection = Configuration.GetSection("RabbitMq");
-            var exchangeSection = Configuration.GetSection("RabbitMqExchange");
-            var exchangeSectionQuestion = Configuration.GetSection("RabbitMqExchangeQuestion");
+            var rabbitMqIntegrationRequest = Configuration.GetSection("RabbitMqIntegrationRequest");
+            var RabbitMqIntegrationResponse = Configuration.GetSection("RabbitMqIntegrationResponse");
+            var RabbitMqDialog = Configuration.GetSection("RabbitMqDialog");
 
             services.AddRabbitMqClient(rabbitMqSection)
-                .AddExchange("exchange.name", isConsuming: false, exchangeSection)
-                .AddExchange("question.name", isConsuming: true, exchangeSectionQuestion)
-                .AddMessageHandlerTransient<CustomMessageHandler>("question.key", exchange: "question.name");
+                .AddExchange("integration.request", isConsuming: false, rabbitMqIntegrationRequest)
+                .AddExchange("integration.response", isConsuming: true, RabbitMqIntegrationResponse)
+                .AddExchange("bot.dialog", isConsuming: true, RabbitMqDialog)
+                .AddMessageHandlerTransient<CustomMessageHandler>("dialog.key", exchange: "bot.dialog")
+                .AddNonCyclicMessageHandlerTransient<ResponseMessageHandler>("response.key", exchange: "integration.response");
 
             services.AddSingleton<IHostedService, ConsumingService>();
 

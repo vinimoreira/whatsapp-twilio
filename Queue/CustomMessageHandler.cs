@@ -34,7 +34,7 @@ namespace TwilioWhatsAppBot.Queue
         public void Handle(BasicDeliverEventArgs eventArgs, string matchingRoute)
         {
             var payload = eventArgs.GetPayload<Question>();
-            
+
             ConversationReference conversation = null;
             _conversationReferences.TryGetValue(payload.ReplyToId, out conversation);
 
@@ -49,7 +49,9 @@ namespace TwilioWhatsAppBot.Queue
         {
             var reply = MessageFactory.Text(question.Text);
 
-            conversation.Conversation.Properties.Add("QuestionId", question.Id);
+            conversation.Conversation.Properties["QuestionId"] = question.Id;
+            conversation.Conversation.Properties["NextQuestion"] = question.NextQuestion;
+
             reply.Conversation = conversation.Conversation;
 
             if (question.Options != null)

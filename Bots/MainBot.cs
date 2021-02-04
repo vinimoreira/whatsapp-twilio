@@ -52,10 +52,8 @@ namespace TwilioWhatsAppBot.Bots
        
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
-            // Run the Dialog with the new message Activity.
-            // Save any state changes.
             AddConversationReference(turnContext.Activity as Activity);
-            await _queueService.QueueActivityToProcess(turnContext.Activity);
+            await _queueService.ResponseActivityToProcess(turnContext.Activity);
             await _userState.SaveChangesAsync(turnContext, cancellationToken: cancellationToken);
         }
 

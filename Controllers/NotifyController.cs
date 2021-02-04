@@ -26,10 +26,10 @@ namespace TwilioWhatsAppBot.Controllers
         }
 
         [HttpPost("{id}")]
-        public async Task PostAsync(string id, Question question)
+        public async Task PostAsync(string id, Response question)
         {
             var message = JsonConvert.SerializeObject(question, jsonSettings);
-            await _queueService.SendJsonAsync(message, exchangeName: "question.name", routingKey: "question.key");
+            await _queueService.SendJsonAsync(message, exchangeName: "integration.response", routingKey: "response.key");
         }
 
         
