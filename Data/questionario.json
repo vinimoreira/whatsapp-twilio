@@ -79,8 +79,34 @@
     "nextQuestion": 5
   },
   {
-    "id": 8,
-    "type": "template",
-    "text": "Por favor digite novamente"
+    "id": 5,
+    "type": "anwer",
+    "integrationKey": "VALIDAR_EMAIL_CPF",
+    "nextQuestion": 3,
+    "RetryText": "Digite novamente sem CPF"
+  },
+  {
+    "id": 6,
+    "type": "question",
+    "messages": [
+      {
+        "text": "O seu celular é: @Model.Cel",
+        "type": "template",
+        "order": 3,
+        "options": [
+          {
+            "id": "1",
+            "text": "Sim",
+            "nextQuestion": 4
+          },
+          {
+            "id": "2",
+            "text": "Não",
+            "nextQuestion": 5
+          }
+        ],
+        "notFoundText": "Não foi possivel localizar a opção selecionada."
+      }
+    ]
   }
 ]
